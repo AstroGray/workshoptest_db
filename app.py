@@ -7,7 +7,7 @@ import plotly.express as px
 conn = sqlite3.connect('data.db')
 
 # Load maintenance data
-query = "SELECT WorkshopID, DateIn, Cost FROM MaintenanceRecord;"
+query = "SELECT WorkshopID, DateIn, Issue, Cost FROM MaintenanceRecord;"
 df = pd.read_sql_query(query, conn)
 
 # If your dates are strings, convert them to datetime
@@ -20,7 +20,7 @@ except Exception:
 app = Dash(__name__)
 
 # Create a visualization (cost over time by workshop)
-fig = px.line(df, x='DateIn', y='Cost', color='WorkshopID', title='Maintenance Cost Over Time', markers=True)
+fig = px.bar(df, x='Issue', y='Cost', color='WorkshopID', title='Maintenance Cost Over Time')
 
 # Format y-axis as currency with dollars and commas
 fig.update_layout(
@@ -28,7 +28,7 @@ fig.update_layout(
         tickprefix='$',  # Adds $ before each tick value
         tickformat=',.0f'  # Adds commas for thousands and 2 decimal places
     ),
-    xaxis_title='Date'  # Changes the x-axis label to "Date"
+    xaxis_title='Issue'  # Changes the x-axis label to "Date"
 )
 
 fig2 = px.pie(df, names='WorkshopID', values='Cost', title='Cost Breakdown by Workshop')
