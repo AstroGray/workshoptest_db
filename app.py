@@ -33,6 +33,13 @@ fig.update_layout(
 
 fig2 = px.pie(df, names='WorkshopID', values='Cost', title='Cost Breakdown by Workshop')
 
+# Format pie slices to show workshop name, dollar-formatted cost, and percentage
+fig2.update_traces(
+    texttemplate='%{label}<br>$%{value:,.0f}<br>(%{percent})',
+    textposition='inside',
+    textinfo='label+text'  # Ensures the template is used; adjust to 'percent+text' if you prefer no labels
+)
+
 # Dashboard layout
 app.layout = html.Div([
     html.H1('Workshop Maintenance Overview'),
